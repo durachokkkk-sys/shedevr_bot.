@@ -1,4 +1,5 @@
-BOT_TOKEN = "ВАШ_ТОКЕН_ОТ_BOTFATHER"
+
+BOT_TOKEN = os.getenv("BOT_TOKEN")
 
 DATE_1 = "17 июля"
 TOPIC_1 = "Летний сад"
