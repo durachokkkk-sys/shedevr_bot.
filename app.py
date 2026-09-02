@@ -1,4 +1,5 @@
 import os
+import threading
 import asyncio
 from flask import Flask
 from bot import dp, bot
@@ -13,14 +14,19 @@ def home():
 def health():
     return "OK", 200
 
-# Запускаем бота в отдельной асинхронной задаче
 async def start_bot():
     await dp.start_polling(bot)
 
+# Запускаем бота в отдельном потоке
+def run_bot_thread():
+    asyncio.run(start_bot())
+
 if __name__ == "__main__":
-    # Запускаем бота в фоновом режиме через asyncio.run()
-    asyncio.run(start_bot())  # <--- ИСПРАВЛЕНО: используем asyncio.run
+    # Поток для бота
+    bot_thread = threading.Thread(target=run_bot_thread)
+    bot_thread.daemon = True
+    bot_thread.start()
     
-    # Запускаем веб-сервер
+    # Веб-сервер (это то, что Render ищет)
     port = int(os.getenv("PORT", 10000))
     app.run(host='0.0.0.0', port=port)
