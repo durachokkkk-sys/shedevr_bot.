@@ -14,12 +14,13 @@ def health():
     return "OK", 200
 
 # Запускаем бота в отдельной асинхронной задаче
-async def run_bot():
+async def start_bot():
     await dp.start_polling(bot)
 
 if __name__ == "__main__":
-    # Запускаем бота в фоновом режиме
-    asyncio.create_task(run_bot())  # Исправлено: запуск через create_task
+    # Запускаем бота в фоновом режиме через asyncio.run()
+    asyncio.run(start_bot())  # <--- ИСПРАВЛЕНО: используем asyncio.run
+    
     # Запускаем веб-сервер
     port = int(os.getenv("PORT", 10000))
     app.run(host='0.0.0.0', port=port)
